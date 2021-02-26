@@ -31,34 +31,24 @@ void my_fill_matr_input(float**& matr, int iRowCount, int iColCount) {
 }
 
 void my_print_matr(float**& matr, int iRowCount, int iColCount) {
+	cout << '\n';
 	for (int i = 0; i < iRowCount; i++) {
 		for (int j = 0; j < iColCount; j++) {
-			cout << setprecision(3) << matr[i][j] << "|";
+			cout << setw(4) << setprecision(5) << matr[i][j] << "|";
 		}
 		cout << '\n';
 	}
 }
 
 void my_gauss_method(float**& matr, int iRowCount, int iColCount) {
-	// Find pivot element
-	for (int i = 0; i < iRowCount; i++) {
-		for (int k = i + 1; k < iRowCount; k++) {
-			if (abs(matr[i][i]) < abs(matr[k][i])) {
-				for (int j = 0; j < iColCount; j++) {
-					float iTemp1 = matr[i][j];
-					matr[i][j] = matr[k][j];
-					matr[k][j] = iTemp1;
-				}
-			}
-		}
-	}
-
-	// Make pivot element equal to one
+	// Make first element equal to one
+	float fTemp1 = matr[0][0];
 	for (int j = 0; j < iColCount; j++) {
-		matr[0][j] /= matr[0][0];
+		matr[0][j] /= fTemp1;
 	}
+	my_print_matr(matr, iRowCount, iColCount);
 
-	// Make column elements below pivot element equal to zero
+	// Make column elements below first element equal to zero
 	for (int i = 0; i < iRowCount - 1; i++) {
 		for (int k = i + 1; k < iRowCount; k++) {
 			float iFactor = matr[k][i] / matr[i][i];
@@ -67,27 +57,40 @@ void my_gauss_method(float**& matr, int iRowCount, int iColCount) {
 			}
 		}
 	}
+	for (int i = 0; i < iRowCount; i++) {
+		for (int j = 0; j < i; j++) {
+			// Make column elements below first element equal to zero explicitly
+			matr[i][j] = NULL;
+		}
+	}
+	my_print_matr(matr, iRowCount, iColCount);
+
+	// Make main diagonal elements equal to one
+	for (int i = 0; i < iRowCount; i++) {
+		float fTemp3 = matr[i][i];
+		for (int j = 0; j < iColCount; j++) {
+			matr[i][j] /= fTemp3;
+		}
+	}
+	my_print_matr(matr, iRowCount, iColCount);
 
 	// Back-substitution
 	float* x = new float[iRowCount];
 	for (int i = 0; i < iRowCount; i++) {
 		x[i] = matr[i][iColCount - 1];
 	}
-	for (int i = iRowCount - 1; i >= 0; i--) {
-		for (int k = i; k < iRowCount; k++) {
-			if (k != i) {
-				x[i] -= matr[i][k] * x[k];
-			}
+	for (int i = iRowCount - 2; i >= 0; i--) {
+		for (int j = i + 1; j < iRowCount; j++) {
+			x[i] -= matr[i][j] * x[j];
 		}
 	}
 
 	// Print result
-	cout << "\nThe required values:\n";
-	cout << '( ';
+	cout << "\nThe required values:\n\n";
 	for (int i = 0; i < iRowCount; i++) {
-		cout << fixed << setprecision(1) << x[i] << ', ';
+		cout << x[i] << "|";
 	}
-	cout << ')';
+	cout << '\n';
 	delete[] x;
 }
 
