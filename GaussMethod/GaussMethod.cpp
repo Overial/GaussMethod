@@ -67,9 +67,9 @@ void my_gauss_method(float**& matr, int iRowCount, int iColCount) {
 
 	// Make main diagonal elements equal to one
 	for (int i = 0; i < iRowCount; i++) {
-		float fTemp3 = matr[i][i];
+		float fTemp2 = matr[i][i];
 		for (int j = 0; j < iColCount; j++) {
-			matr[i][j] /= fTemp3;
+			matr[i][j] /= fTemp2;
 		}
 	}
 	my_print_matr(matr, iRowCount, iColCount);
