@@ -51,9 +51,9 @@ void my_gauss_method(float**& matr, int iRowCount, int iColCount) {
 	// Make column elements below first element equal to zero
 	for (int i = 0; i < iRowCount - 1; i++) {
 		for (int k = i + 1; k < iRowCount; k++) {
-			float iFactor = matr[k][i] / matr[i][i];
+			float fFactor = matr[k][i] / matr[i][i];
 			for (int j = 0; j < iColCount; j++) {
-				matr[k][j] -= iFactor * matr[i][j];
+				matr[k][j] -= fFactor * matr[i][j];
 			}
 		}
 	}
@@ -88,7 +88,7 @@ void my_gauss_method(float**& matr, int iRowCount, int iColCount) {
 	// Print result
 	cout << "\nThe required values:\n\n";
 	for (int i = 0; i < iRowCount; i++) {
-		cout << x[i] << "|";
+		cout << x[i] << '|';
 	}
 	cout << '\n';
 	delete[] x;
